@@ -1,0 +1,26 @@
+services:
+  sign-app:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./service:/service
+    environment:
+      - DB_HOST=database
+      - DB_NAME=wheelson
+      - DB_USER=postgres
+      - DB_PASSWORD=pass
+
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+
+    depends_on:
+      - database
+
+  database:
+    image: postgres:16.2-alpine3.19
+    environment:
+      - POSTGRES_DB=wheelson
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=pass
