@@ -4,3 +4,5 @@
 2)docker-compose up
 
 /google - лежит нерабочая кнопка для входа через гугл, код страницы лежит по пути - \appsSignin\service\googlein\oauth\googlelogin.html
+
+/auth/apple/ - на этот url кидать json "access_token"
