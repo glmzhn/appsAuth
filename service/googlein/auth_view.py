@@ -12,7 +12,7 @@ def google_login(request):
 
 @api_view(['POST'])
 def google_auth(request):
-    google_data = serializers.GoogleAuth(data=request.data)
+    google_data = serializers.GoogleAuthSerializer(data=request.data)
     if google_data.is_valid():
         token = check_google_auth(google_data.data)
         return Response(token)
