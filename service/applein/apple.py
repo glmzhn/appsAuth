@@ -2,11 +2,12 @@ import jwt
 import requests
 from datetime import timedelta
 from django.utils import timezone
+from rest_framework import status
 from rest_framework.response import Response
 from social_core.backends.oauth import BaseOAuth2
-from social_core.utils import handle_http_errors
 import os
 
+from social_core.utils import handle_http_errors
 
 with open('AuthKey_WWZ9TCJK3B.p8', 'r', encoding='utf-8') as file:
     clg = file.read()
@@ -39,13 +40,14 @@ class AppleOAuth2(BaseOAuth2):
             decoded = jwt.decode(id_token, '', verify=False)
             response_data.update({'email': decoded['email']}) if 'email' in decoded else None
             response_data.update({'uid': decoded['sub']}) if 'sub' in decoded else None
+            response_data.update({'email_verified': decoded['email_verified']}) if 'email_verified' in decoded else None
 
         response = kwargs.get('response') or {}
         response.update(response_data)
         response.update({'access_token': access_token}) if 'access_token' not in response else None
 
         kwargs.update({'response': response, 'backend': self})
-        return Response(response_data)
+        return Response(response_data, status=status.HTTP_200_OK)
 
     def get_user_details(self, response):
         email = response.get('email', None)
